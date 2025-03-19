@@ -6,7 +6,7 @@ public class Piano {
     Queue codaPersone;
 
     Piano(int numeroPiano) {
-        codaPersone = new LinkedList<Persona>;
+        codaPersone = new LinkedList<Persona>();
         this.numeroPiano = numeroPiano;
     }
 

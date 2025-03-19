@@ -12,7 +12,15 @@ public class Ascensore
     this.pianocorrente = pianocorrente;
     this.capienzamassima = capienzamassima;
     this.porteAperte = false;
-    personeDentro = new ArrayList<>;
+    personeDentro = new ArrayList<>();
+  }
+
+  public int getPianoCorrente() {
+    return pianocorrente;
+  }
+
+  public int getCapienzaMassima() {
+    return capienzamassima;
   }
 
   public void salita() {
@@ -47,43 +55,11 @@ public class Ascensore
     else
       discesa();
   }
-  public int getPianoCorrente()
-  {
-    return pianocorrente;
-  }
-
-  public int getCapienzaMassima() {
-    return capienzamassima;
-  }
-
-  public void aggiungiPersona(Persona p)
-  {
-    if (porteAperte == true && personeDentro.size() <= capienzamassima)
-    {
-
-    }
-    else
-    {
-      System.out.println("Porte Chiuse oppure capienza massima raggiunta");
-    }
-  }
-
-  public void rimuoviPersoneArrivate()
-  {
-    if(porte aperte == true)
-    {
-
-    }
-    else
-    {
-
-    }
-  }
 
   @Override
   public String toString()
   {
-    return "Numero Persone presenti nell'ascensore: " + Persona + "Piano Corrente: " + pianocorrente + "Capienza Massima: " + capienzamassima;
+    return "Numero Persone presenti nell'ascensore: " + personeDentro.size() + "\nPiano Corrente: " + pianocorrente + "\nCapienza Massima: " + capienzamassima;
   }
 
 

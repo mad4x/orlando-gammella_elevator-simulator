@@ -60,7 +60,7 @@ public class Ascensore
   {
     if (porteAperte == true && personeDentro.size() <= capienzamassima)
     {
-
+        personeDentro.add(p);
     }
     else
     {
@@ -70,13 +70,9 @@ public class Ascensore
 
   public void rimuoviPersoneArrivate()
   {
-    if(porte aperte == true)
-    {
-
-    }
-    else
-    {
-
+    for (Persona p : this.personeDentro) {
+      if(p.getPianoDestinazione() == this.pianocorrente)
+        personeDentro.remove(p);
     }
   }
 

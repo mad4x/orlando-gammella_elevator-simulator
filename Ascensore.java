@@ -56,6 +56,26 @@ public class Ascensore
       discesa();
   }
 
+  public void aggiungiPersona(Persona p)
+  {
+    if (porteAperte == true && personeDentro.size() <= capienzamassima)
+    {
+        personeDentro.add(p);
+    }
+    else
+    {
+      System.out.println("Porte Chiuse oppure capienza massima raggiunta");
+    }
+  }
+
+  public void rimuoviPersoneArrivate()
+  {
+    for (Persona p : this.personeDentro) {
+      if(p.getPianoDestinazione() == this.pianocorrente)
+        personeDentro.remove(p);
+    }
+  }
+
   @Override
   public String toString()
   {

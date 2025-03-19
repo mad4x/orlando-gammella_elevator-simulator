@@ -1,11 +1,12 @@
 import java.util.Queue;
+import java.util.LinkedList;
 
 public class Piano {
     int numeroPiano;
     Queue codaPersone;
 
     Piano(int numeroPiano) {
-        codaPersone = new ArrayList<Persona>;
+        codaPersone = new LinkedList<Persona>;
         this.numeroPiano = numeroPiano;
     }
 

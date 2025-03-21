@@ -10,12 +10,25 @@ public class Piano {
         this.numeroPiano = numeroPiano;
     }
 
+
+
+    //aggiungi persona al piano e chiama ascensore se non ancora chiamato
     void aggiungiPersonaCoda(Persona p) {
-        codaPersone.offer(p);
+
     }
 
     Persona rimuoviPersonaCoda() {
         return (Persona) codaPersone.poll();
+    }
+
+    public void popolaPiano(int persone) {
+        for(int i = 0; i < persone; i++) {
+            codaPersone.offer(new Persona());
+        }
+    }
+
+    public void chiamaAscensore(int destinazione, Ascensore a) {
+        a.riceviChiamata(destinazione);
     }
 
     @Override

@@ -1,18 +1,25 @@
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
 
 public class Ascensore
 {
   private int pianocorrente;
   private int capienzamassima;
   private boolean porteAperte;
-  private ArrayList<Persona> personeDentro; 
+  private ArrayList<Persona> personeDentro;
+  private Queue chiamate;
 
-  public Ascensore(int pianocorrente, int capienzamassima)
-  {
-    this.pianocorrente = pianocorrente;
+  public Ascensore(int capienzamassima) {
+    this.pianocorrente = 0;
     this.capienzamassima = capienzamassima;
     this.porteAperte = false;
-    personeDentro = new ArrayList<>();
+    personeDentro = new ArrayList<Persona>();
+    chiamate = new LinkedList<Integer>();
+  }
+
+  public void setPianocorrente(int pianocorrente) {
+    this.pianocorrente = pianocorrente;
   }
 
   public int getPianoCorrente() {
@@ -23,56 +30,58 @@ public class Ascensore
     return capienzamassima;
   }
 
+
+
+  public void chiudiPorte() {
+    porteAperte = false;
+    System.out.println("Le porte vengono chiuse...");
+  }
+
+  public void apriPorte() {
+    porteAperte = true;
+    System.out.println("Le porte vengono aperte...");
+  }
+
+  public void riceviChiamata(int piano) {
+    if (!chiamate.contains(piano)) {}
+      chiamate.offer(piano);
+  }
+
+
+
+  public boolean vuoto() {
+    return personeDentro.isEmpty();
+  }
+
   public void salita() {
+    chiudiPorte();
     pianocorrente++;
+    System.out.println("L'ascensore sale al piano " + pianocorrente);
   }
 
   public void discesa() {
-    capienzamassima--;
+    chiudiPorte();
+    pianocorrente--;
+    System.out.println("L'ascensore scende al piano " + pianocorrente);
   }
 
-  public void decidiDirezione() {
-
-    switch (pianocorrente) {
-      case 10: salita();
-        return;
-      case 0: discesa();
-        return;
-    }
-
-    int salitori = 0;
-    int discesori = 0;
-
-    for(Persona p : personeDentro) {
-      if(p.getPianoDestinazione() > pianocorrente)
-        salitori++;
-      else
-        discesori++;
-    }
-
-    if (salitori >= discesori)
-      salita();
-    else
-      discesa();
+  public void aggiungiPersona(Persona p) {
+    if (personeDentro.size() < capienzamassima)
+      personeDentro.add(p);
   }
 
-  public void aggiungiPersona(Persona p)
-  {
-    if (porteAperte == true && personeDentro.size() <= capienzamassima)
-    {
-        personeDentro.add(p);
-    }
-    else
-    {
-      System.out.println("Porte Chiuse oppure capienza massima raggiunta");
-    }
+  public void aggiungiPrenotazione(int p) {
+    chiamate.offer(p);
   }
 
   public void rimuoviPersoneArrivate()
   {
+    apriPorte();
     for (Persona p : this.personeDentro) {
-      if(p.getPianoDestinazione() == this.pianocorrente)
+      if(p.getPianoDestinazione() == this.pianocorrente) {
         personeDentro.remove(p);
+        System.out.println(p.getId() + " è uscito dall'ascensore.");
+      }
     }
   }
 

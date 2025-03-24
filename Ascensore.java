@@ -1,6 +1,4 @@
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class Ascensore
 {
@@ -8,18 +6,19 @@ public class Ascensore
   private int capienzamassima;
   private boolean porteAperte;
   private ArrayList<Persona> personeDentro;
-  private Queue chiamate;
+  private ArrayList<Integer> salite;
+  private ArrayList<Integer> discese;
+  private boolean salendo;
+
 
   public Ascensore(int capienzamassima) {
     this.pianocorrente = 0;
     this.capienzamassima = capienzamassima;
     this.porteAperte = false;
     personeDentro = new ArrayList<Persona>();
-    chiamate = new LinkedList<Integer>();
-  }
-
-  public void setPianocorrente(int pianocorrente) {
-    this.pianocorrente = pianocorrente;
+    salite = new ArrayList<Integer>();
+    discese = new ArrayList<Integer>();
+    salendo = true;
   }
 
   public int getPianoCorrente() {
@@ -29,7 +28,6 @@ public class Ascensore
   public int getCapienzaMassima() {
     return capienzamassima;
   }
-
 
 
   public void chiudiPorte() {
@@ -42,15 +40,19 @@ public class Ascensore
     System.out.println("Le porte vengono aperte...");
   }
 
-  public void riceviChiamata(int piano) {
-    if (!chiamate.contains(piano)) {}
-      chiamate.offer(piano);
-  }
-
-
 
   public boolean vuoto() {
     return personeDentro.isEmpty();
+  }
+
+  public void aggiungiSalita(int piano) {
+    if(!salite.contains(piano))
+      salite.add(piano);
+  }
+
+  public void aggiungiDiscesa(int piano) {
+    if(!discese.contains(piano))
+      discese.add(piano);
   }
 
   public void salita() {
@@ -65,13 +67,21 @@ public class Ascensore
     System.out.println("L'ascensore scende al piano " + pianocorrente);
   }
 
+  public void decidiDirezione() {
+    if(salendo)
+      if(!salite.isEmpty())
+        salita();
+      else
+        salendo = false;
+    else if(!discese.isEmpty())
+      discesa();
+    else
+      salendo = true;
+  }
+
   public void aggiungiPersona(Persona p) {
     if (personeDentro.size() < capienzamassima)
       personeDentro.add(p);
-  }
-
-  public void aggiungiPrenotazione(int p) {
-    chiamate.offer(p);
   }
 
   public void rimuoviPersoneArrivate()

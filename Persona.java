@@ -6,7 +6,8 @@ public class Persona
 
   public Persona() {
     this.id = ++numero_persone;
-    this.pianoDestinazione = (int)(Math.random()*10+1);
+    this.pianoDestinazione = (int)(Math.random()*11);
+
   }
 
   public int getId() { return id; }

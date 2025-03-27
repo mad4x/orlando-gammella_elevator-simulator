@@ -1,8 +1,10 @@
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Ascensore
 {
   private int pianocorrente;
+  private int numeroPiani;
   private int capienzamassima;
   private boolean porteAperte;
   private ArrayList<Persona> personeDentro;
@@ -11,8 +13,9 @@ public class Ascensore
   private boolean salendo;
 
 
-  public Ascensore(int capienzamassima) {
+  public Ascensore(int capienzamassima, int numeroPiani) {
     this.pianocorrente = 0;
+    this.numeroPiani = numeroPiani;
     this.capienzamassima = capienzamassima;
     this.porteAperte = false;
     personeDentro = new ArrayList<Persona>();
@@ -24,30 +27,41 @@ public class Ascensore
   public int getPianoCorrente() {
     return pianocorrente;
   }
-
   public int getCapienzaMassima() {
     return capienzamassima;
   }
+  public boolean getSalendo() { return salendo; }
 
 
   public void chiudiPorte() {
-    porteAperte = false;
-    System.out.println("Le porte vengono chiuse...");
+    if (porteAperte) {
+      porteAperte = false;
+      System.out.println("Le porte vengono chiuse...");
+    }
   }
 
   public void apriPorte() {
-    porteAperte = true;
-    System.out.println("Le porte vengono aperte...");
+    if (!porteAperte) {
+      porteAperte = true;
+      System.out.println("Le porte vengono aperte...");
+    }
   }
 
 
   public boolean vuoto() {
     return personeDentro.isEmpty();
   }
+  public boolean pieno() { return personeDentro.size() == capienzamassima; }
+
 
   public void aggiungiSalita(int piano) {
     if(!salite.contains(piano))
       salite.add(piano);
+  }
+
+  public void rimuoviSalita(int n) {
+    if (salite.contains(n))
+      salite.remove(Integer.valueOf(n));
   }
 
   public void aggiungiDiscesa(int piano) {
@@ -55,44 +69,80 @@ public class Ascensore
       discese.add(piano);
   }
 
+  public void rimuoviDiscesa(int n) {
+    if (discese.contains(n))
+      discese.remove(Integer.valueOf(n));
+  }
+
+  public void rimuoviDaLista(int n) {
+    rimuoviSalita(n);
+    rimuoviDiscesa(n);
+  }
+
+
   public void salita() {
-    chiudiPorte();
     pianocorrente++;
     System.out.println("L'ascensore sale al piano " + pianocorrente);
   }
 
   public void discesa() {
-    chiudiPorte();
     pianocorrente--;
     System.out.println("L'ascensore scende al piano " + pianocorrente);
   }
 
   public void decidiDirezione() {
     if(salendo)
-      if(!salite.isEmpty())
+      if((!salite.isEmpty() || devoSalire())
+          && !(pianocorrente == numeroPiani-1))
         salita();
       else
         salendo = false;
-    else if(!discese.isEmpty())
-      discesa();
+
     else
-      salendo = true;
+      if((!discese.isEmpty() || devoScendere())
+          && !(pianocorrente == 0))
+        discesa();
+      else
+        salendo = true;
   }
 
   public void aggiungiPersona(Persona p) {
-    if (personeDentro.size() < capienzamassima)
+    if (personeDentro.size() < capienzamassima) {
       personeDentro.add(p);
+      System.out.println(p.getId() + " è salito sull'ascensore.");
+    }
   }
 
-  public void rimuoviPersoneArrivate()
-  {
-    apriPorte();
-    for (Persona p : this.personeDentro) {
-      if(p.getPianoDestinazione() == this.pianocorrente) {
-        personeDentro.remove(p);
+  public void rimuoviPersoneArrivate() {
+    Iterator<Persona> iterator = this.personeDentro.iterator();
+
+    while (iterator.hasNext()) {
+      Persona p = iterator.next();
+      if (p.getPianoDestinazione() == this.pianocorrente) {
+        iterator.remove();
         System.out.println(p.getId() + " è uscito dall'ascensore.");
       }
     }
+
+  }
+
+
+  public boolean devoSalire() {
+    for(Persona p : personeDentro) {
+      if(p.getPianoDestinazione() > pianocorrente)
+        return true;
+    }
+
+    return false;
+  }
+
+  public boolean devoScendere() {
+    for(Persona p : personeDentro) {
+      if(p.getPianoDestinazione() < pianocorrente)
+        return true;
+    }
+
+    return false;
   }
 
   @Override

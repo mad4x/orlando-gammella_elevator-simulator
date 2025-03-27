@@ -1,15 +1,68 @@
 public class Simulazione {
   public static void main(String[] args) {
 
-    Ascensore ascensore = new Ascensore(6);
-    Piano[] piani = creaPiani(10);
-    popolaPiani(piani, ascensore);
+    int numeroPiani = 10;
 
-    while(true) {
+    Ascensore ascensore = new Ascensore(6, numeroPiani);
+    Piano[] piani = creaPiani(numeroPiani);
 
+
+      popolaPiani(piani, ascensore);
+
+      while(personePresenti(piani)) {
+        Piano pianoattuale = piani[ascensore.getPianoCorrente()];
+        int lunghezzaCoda = pianoattuale.getLunghezzaCoda();
+        /*
+        while(!pianoattuale.vuoto() || controllaSeAprire(ascensore, pianoattuale)) {
+          if (ascensore.pieno())
+            break;
+
+          Persona prossimo = pianoattuale.controllaProssimo();
+          if (prossimo)
+
+          ascensore.aggiungiPersona(pianoattuale.rimuoviPersonaCoda());
+        }
+        */
+
+        if (controllaSeAprire(ascensore, pianoattuale)) {
+          for (int i = 0; i < lunghezzaCoda
+              && !ascensore.pieno(); i++) {
+
+            ascensore.aggiungiPersona(pianoattuale.rimuoviPersonaCoda());
+          }
+          pianoattuale.reimpostaTasti();
+        }
+        ascensore.rimuoviPersoneArrivate();
+
+        if(pianoattuale.vuoto()) {
+          ascensore.rimuoviDaLista(pianoattuale.getNumeroPiano());
+        }
+
+        ascensore.chiudiPorte();
+        ascensore.decidiDirezione();
+      }
+
+  }
+
+  public static boolean controllaSeAprire(Ascensore a, Piano p) {
+    if (a.getSalendo() && p.getSalire()) {
+      a.apriPorte();
+      return true;
+    }
+    if (!a.getSalendo() && p.getScendere()) {
+      a.apriPorte();
+      return true;
+    }
+    return false;
+  }
+
+  public static boolean personePresenti(Piano[] piani) {
+    for(Piano p : piani) {
+      if(!p.getCodaPersone().isEmpty())
+        return true;
     }
 
-
+    return false;
   }
 
   //risolvere il passaggio costante di un Ascensore

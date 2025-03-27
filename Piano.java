@@ -3,7 +3,7 @@ import java.util.LinkedList;
 
 public class Piano {
     private int numeroPiano;
-    private Queue codaPersone;
+    private Queue<Persona> codaPersone;
     private boolean salire;
     private boolean scendere;
 
@@ -14,6 +14,12 @@ public class Piano {
         this.scendere = false;
     }
 
+    public Queue getCodaPersone() { return codaPersone; }
+    public boolean vuoto() { return codaPersone.isEmpty(); }
+    public int getNumeroPiano() { return numeroPiano; }
+    public boolean getSalire() { return salire; }
+    public boolean getScendere() { return scendere; }
+    public int getLunghezzaCoda() { return codaPersone.size(); }
 
     //aggiungi persona al piano e chiama ascensore se non ancora chiamato
     public void aggiungiPersonaCoda(Persona p, Ascensore a) {
@@ -27,13 +33,14 @@ public class Piano {
     public Persona rimuoviPersonaCoda() {
         return (Persona) codaPersone.poll();
     }
+    public Persona controllaProssimo() { return codaPersone.peek(); }
+    public void rendiPrimoUltimo() { codaPersone.offer(codaPersone.poll()); }
 
     public void popolaPiano(int persone, Ascensore a) {
         for(int i = 0; i < persone; i++) {
             aggiungiPersonaCoda(new Persona(), a);
         }
     }
-
 
     public void premiSalita(Ascensore a) {
         salire = true;
@@ -45,6 +52,22 @@ public class Piano {
         scendere = true;
         a.aggiungiDiscesa(numeroPiano);
         System.out.println("Chiamata una discesa al piano " + this.numeroPiano);
+    }
+
+    //potrebbe sostituire premi salita e premi discesa
+    public void reimpostaTasti() {
+        if(codaPersone.isEmpty()) {
+            salire = false;
+            scendere = false;
+            return;
+        }
+
+        for (Persona p : codaPersone) {
+           if(p.getPianoDestinazione() > numeroPiano)
+               salire = true;
+           if(p.getPianoDestinazione() < numeroPiano)
+               scendere = true;
+        }
     }
 
     @Override

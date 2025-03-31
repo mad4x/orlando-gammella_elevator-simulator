@@ -7,22 +7,12 @@ public class Simulazione {
     Piano[] piani = creaPiani(numeroPiani);
 
 
+    while(true) {
       popolaPiani(piani, ascensore);
 
       while(personePresenti(piani)) {
         Piano pianoattuale = piani[ascensore.getPianoCorrente()];
         int lunghezzaCoda = pianoattuale.getLunghezzaCoda();
-        /*
-        while(!pianoattuale.vuoto() || controllaSeAprire(ascensore, pianoattuale)) {
-          if (ascensore.pieno())
-            break;
-
-          Persona prossimo = pianoattuale.controllaProssimo();
-          if (prossimo)
-
-          ascensore.aggiungiPersona(pianoattuale.rimuoviPersonaCoda());
-        }
-        */
 
         if (controllaSeAprire(ascensore, pianoattuale)) {
           for (int i = 0; i < lunghezzaCoda
@@ -41,6 +31,7 @@ public class Simulazione {
         ascensore.chiudiPorte();
         ascensore.decidiDirezione();
       }
+    }
 
   }
 
@@ -70,7 +61,7 @@ public class Simulazione {
   public static void popolaPiani(Piano[] edificio, Ascensore a) {
     for (Piano p : edificio) {
       if(Math.round(Math.random()) == 1)
-        p.popolaPiano(2, a);
+        p.popolaPiano(2, a, p);
     }
   }
 

@@ -36,9 +36,9 @@ public class Piano {
     public Persona controllaProssimo() { return codaPersone.peek(); }
     public void rendiPrimoUltimo() { codaPersone.offer(codaPersone.poll()); }
 
-    public void popolaPiano(int persone, Ascensore a) {
+    public void popolaPiano(int persone, Ascensore a, Piano p) {
         for(int i = 0; i < persone; i++) {
-            aggiungiPersonaCoda(new Persona(), a);
+            aggiungiPersonaCoda(new Persona(p.getNumeroPiano()), a);
         }
     }
 

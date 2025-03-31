@@ -92,14 +92,14 @@ public class Ascensore
 
   public void decidiDirezione() {
     if(salendo)
-      if((!salite.isEmpty() || devoSalire())
+      if((!salite.isEmpty() || devoSalire() || pianocorrente == 0 || !discese.isEmpty())
           && !(pianocorrente == numeroPiani-1))
         salita();
       else
         salendo = false;
 
     else
-      if((!discese.isEmpty() || devoScendere())
+      if((!discese.isEmpty() || devoScendere() || pianocorrente == numeroPiani-1 || !salite.isEmpty() )
           && !(pianocorrente == 0))
         discesa();
       else

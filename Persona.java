@@ -4,9 +4,12 @@ public class Persona
   private int pianoDestinazione;
   private static int numero_persone = 0;
 
-  public Persona() {
+  public Persona(int pianoAttuale) {
     this.id = ++numero_persone;
-    this.pianoDestinazione = (int)(Math.random()*10);
+    int numero = pianoAttuale;
+    while(numero == pianoAttuale)
+      numero = (int)(Math.random()*10);
+    this.pianoDestinazione = numero;
   }
 
   public int getId() { return id; }
